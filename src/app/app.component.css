@@ -1,0 +1,10 @@
+.diagram-div{
+    height: 1000px;
+    width: 1600px;
+}
+.load-img{
+    left: 50%;
+    top: 50%;
+    position: absolute;
+    z-index: 9999;
+}
