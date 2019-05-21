@@ -31,7 +31,7 @@ export class AppComponent implements AfterViewInit {
     width: 127216
   };
   mapLocationId = 1015222;
-  isLoaded
+  change:boolean
 
   constructor(private http: HttpClient) {
   }
@@ -91,6 +91,7 @@ export class AppComponent implements AfterViewInit {
     let deviceTemplate =
       $(go.Node, "Auto",
         {
+          doubleClick:()=>{this.diagram.updateAllTargetBindings()},
           rotateObjectName: "ROTATE_PART",
           locationSpot: go.Spot.Center,
           layerName: "Foreground",
@@ -114,8 +115,9 @@ export class AppComponent implements AfterViewInit {
           return "SHAPE"
         }),
         new go.Binding("location", "", (data) => {
-          if (data.model && data.model.Coordination)
+          if (data.model && data.model.Coordination) {
             return new go.Point(data.model.Coordination[0], data.model.Coordination[1]);
+          }
         }).makeTwoWay((pt, data) => {
           data.model.Coordination = [pt.x, pt.y];
         }),
@@ -345,8 +347,10 @@ export class AppComponent implements AfterViewInit {
             ),
         },
         new go.Binding("location", "", (data) => {
-          if (data.model && data.model.Coordination)
+          if (data.model && data.model.Coordination) {
+
             return new go.Point(data.model.Coordination[0], data.model.Coordination[1]);
+          }
         }).makeTwoWay((pt, data) => {
           data.model.Coordination = [pt.x, pt.y];
         }),
@@ -522,7 +526,6 @@ export class AppComponent implements AfterViewInit {
     let device = nodes;
     device = this.adjustResourcesToMap(nodes);
     this.loadNodes(device);
-    this.isLoaded = true;
   }
 
   adjustResourcesToMap(resources) {
@@ -597,8 +600,8 @@ export class AppComponent implements AfterViewInit {
     }
     this.diagram.startTransaction("nodes added");
     this.diagram.model.addNodeDataCollection(nodesToAdd);
-                                this.diagram.commitTransaction("nodes added");
-    
+    this.diagram.commitTransaction("nodes added");
+
 
   }
 
